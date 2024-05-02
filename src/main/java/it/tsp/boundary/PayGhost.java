@@ -26,6 +26,7 @@ public class PayGhost {
 
     public static void doRecharge(long accountId, BigDecimal amount) {
         throw new UnsupportedOperationException("not implement yet...");
+        
     }
 
     public static void doTransaction(long tDate, long receiverId, long senderId, BigDecimal amount) {
