@@ -10,7 +10,7 @@ public class App
      */
     public static void main( String[] args )
     { 
-        Account a = new Account("Piny73@gmail.com","1234");
+        Account a = new Account("pincopallo@gmail.com","5678");
 
         Account saved = Store.saveAccount(a);
 

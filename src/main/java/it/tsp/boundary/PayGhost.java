@@ -7,7 +7,7 @@ import it.tsp.entity.Transaction;
 public class PayGhost {
 
     public static void registration(String fname, String lname, String amail, String pwd, String confirmPwd, BigDecimal Credit){
-
+        
 
     }
 
