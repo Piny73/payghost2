@@ -22,7 +22,7 @@ public class App
             "Piny73@gmail.com",
             "8373",
             "8373",
-            BigDecimal.ZERO);
+            BigDecimal.valueOf(100));
 
         /*ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
         Validator validator = vf.getValidator();

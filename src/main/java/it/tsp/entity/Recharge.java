@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "recharge")
@@ -23,6 +24,7 @@ public class Recharge extends BaseEntity implements Serializable {
     @ManyToOne(optional = false)
     private Account account;
     
+    @Positive(message = "L'amount deve essere > di 0")
     @Column(precision = 6, scale = 2, nullable = false)
     private BigDecimal amount;
     @Column(nullable = false)
