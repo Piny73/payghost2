@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "account")
@@ -19,12 +23,30 @@ public class Account extends BaseEntity implements Serializable {
         this.pwd = pwd;
     }
 
-     private String fname;
+    @Email(message = "Indirizzo mail non valido!") 
+    @NotBlank(message = "la pwd non può avere solo spazi!") @Size(min = 4, message = "Inserisci più di 4 caratteri!")
+    @PositiveOrZero
+    public Account(String fname, String lname, String email, String pwd,BigDecimal credit) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.pwd = pwd;
+        this.credit = credit;
+    }
+
+    private String fname;
      private String lname;
+
+     @Email(message = "Indirizzo mail non valido!" )
      @Column(nullable = false, unique = true)
      private String email;
+
+     @NotBlank(message = "la pwd non può avere solo spazi!")
+     @Size(min = 4, message = "Inserisci più di 4 caratteri!")
      @Column(nullable = false)
      private String pwd;
+
+    @PositiveOrZero
      @Column(precision = 6, scale = 2)
      private BigDecimal credit;
 

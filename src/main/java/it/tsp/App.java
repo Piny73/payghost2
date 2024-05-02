@@ -1,7 +1,13 @@
 package it.tsp;
 
-import it.tsp.control.Store;
+
+
+
+import java.math.BigDecimal;
+
+import it.tsp.boundary.PayGhost;
 import it.tsp.entity.Account;
+
 
 public class App 
 {
@@ -10,9 +16,19 @@ public class App
      */
     public static void main( String[] args )
     { 
-        Account a = new Account("","");
+        Account saved = PayGhost.registration(
+            "Giuseppina", 
+            "Salemme", 
+            "Piny73@gmail.com",
+            "8373",
+            "8373",
+            BigDecimal.ZERO);
 
-        Account saved = Store.saveAccount(a);
+        /*ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
+        Validator validator = vf.getValidator();
+        Set<ConstraintViolation<Account>> result = validator.validate(a);
+        result.forEach(v -> System.out.println(v));*/
+
 
         System.out.println(saved);    
     }
