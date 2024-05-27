@@ -1,5 +1,6 @@
 package it.tsp.control;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import it.tsp.entity.Account;
@@ -10,9 +11,9 @@ import jakarta.transaction.Transactional;
 
 @TransactionScoped
 @Transactional(Transactional.TxType.REQUIRED)
-public class AccountStore {
+public class AccountStore implements Serializable {
         @PersistenceContext(unitName = "payghost")
-        private static EntityManager em = null;
+        private EntityManager em = null;
 
         public Account saveAccount(Account e) {
             Account saved = em.merge(e);

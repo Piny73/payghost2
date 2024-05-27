@@ -1,5 +1,6 @@
 package it.tsp.boundary;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -19,7 +20,7 @@ import jakarta.ws.rs.core.Response;
 
 @ApplicationScoped
 @Path("/accounts")
-public class AccountsResource {
+public class AccountsResource implements Serializable {
 
     @Inject
     RechargeStore rechargeStore;

@@ -1,5 +1,6 @@
 package it.tsp.control;
 
+import java.io.Serializable;
 import java.util.List;
 
 import it.tsp.entity.Recharge;
@@ -10,7 +11,7 @@ import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 @Transactional(Transactional.TxType.REQUIRED)
-public class RechargeStore {
+public class RechargeStore implements Serializable {
 
     @PersistenceContext(unitName = "payghost")
     private EntityManager em;

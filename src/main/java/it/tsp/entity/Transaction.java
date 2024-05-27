@@ -12,7 +12,7 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 @NamedQueries({
-    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select t from Transaction t where t.account.id=:id")})
+    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.sender.id= :id or e.receiver.id= :id")})
 @Entity
 @Table(name = "transaction")
 public class Transaction extends BaseEntity implements Serializable {
