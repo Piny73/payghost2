@@ -3,6 +3,8 @@ package it.tsp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import jakarta.json.Json;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.NamedQueries;
@@ -42,12 +44,13 @@ public class Account extends BaseEntity implements Serializable {
         this.pwd = pwd;
         this.credit = credit;
     }
-
-    private String fname;
+     
+     private String fname;
      private String lname;
      @Transient
      private String confirmPwd;
 
+     @NotBlank
      @Email(message = "Indirizzo mail non valido!" )
      @Column(nullable = false, unique = true)
      private String email;
@@ -62,7 +65,6 @@ public class Account extends BaseEntity implements Serializable {
      private BigDecimal credit;
 
      /* il costruttore non è visibile, ma è presente e vuoto */
-
     
     public String getFname() {
         return fname;
@@ -82,6 +84,7 @@ public class Account extends BaseEntity implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    @JsonbTransient
     public String getPwd() {
         return pwd;
     }

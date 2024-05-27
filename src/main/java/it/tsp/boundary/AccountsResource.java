@@ -13,6 +13,7 @@ import it.tsp.entity.Recharge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -36,7 +37,7 @@ public class AccountsResource implements Serializable {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public Response registration(Account account) {
+    public Response registration(@Valid Account account) {
         try {
             if (!Objects.equals(account.getPwd(), account.getConfirmPwd())) {
                 throw new RegistrationException("le password non corrispondono");
@@ -47,7 +48,7 @@ public class AccountsResource implements Serializable {
                 Recharge recharge = new Recharge(saved, account.getCredit());
                 rechargeStore.saveRecharge(recharge);
             }
-            return Response.ok().build();
+            return Response.status(Status.CREATED).entity(saved.getId()).build();
         } catch (Exception ex) {
             throw new RegistrationException(ex.getMessage());
         }
