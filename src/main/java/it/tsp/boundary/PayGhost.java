@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Objects;
 
 
-import it.tsp.control.Store;
+import it.tsp.control.AccountStore;
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
 import it.tsp.entity.Transaction;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
+@ApplicationScoped
 public class PayGhost {
-
+    @Inject
+   AccountStore accountStore;
     public static Account registration(String fname, String lname, String email, String pwd, String confirmPwd,BigDecimal Credit) {
 
         try{
@@ -19,37 +23,36 @@ public class PayGhost {
             throw new RegistrationException("le pwd non corrispondono");
         }
 
-        Store.beginTran();
+        AccountStore.beginTran();
 
         Account account = new Account(fname, lname, email, pwd, Credit);
         
-        Account saved = Store.saveAccount(account);
+        Account saved = AccountStore.saveAccount(account);
 
         if(Credit.compareTo(BigDecimal.ZERO) > 0){
             Recharge recharge =new Recharge(saved, Credit);
-            Recharge r = Store.saveRecharge(recharge);
+            Recharge r = AccountStore.saveRecharge(recharge);
             saved.setCredit(Credit);
-            saved = Store.saveAccount(saved);
+            saved = AccountStore.saveAccount(saved);
         }
-        Store.commitTran();
+        AccountStore.commitTran();
         return saved;
     } catch (Exception ex){
-        Store.rollTran();
+        AccountStore.rollTran();
         throw new RegistrationException(ex.getMessage());
     }
     }
 
     public static Account doRecharge(long accountId, BigDecimal amount) {
         try {
-            Account found = Store.findAccountById(accountId).orElseThrow(() -> new RechargeException("Account non trovato" + accountId));
-            Store.beginTran();
-            Store.saveRecharge(new Recharge(found, amount));
+            Account found = AccountStore.findAccountById(accountId).orElseThrow(() -> new RechargeException("Account non trovato" + accountId));
+            AccountStore.beginTran();
+            AccountStore.saveRecharge(new Recharge(found, amount));
             amount = increaseCredit(amount);
-            Store.saveAccount(found);
-            Store.commitTran();            
+            AccountStore.saveAccount(found);
+                  
             return found;
         } catch (Exception ex){
-            Store.rollTran();
             throw new RechargeException(ex.getMessage());
         }
     }
