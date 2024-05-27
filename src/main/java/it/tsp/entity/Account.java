@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
@@ -12,11 +14,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+@NamedQueries({
+    @NamedQuery(name = Account.FIND_BY_USR, query ="select e from Account e where e.email=:email"),
+    @NamedQuery(name = Account.FIND_ALL, query = "select e from Account e order by e.lname")
+})
 @Entity
 @Table(name = "account")
 
 public class Account extends BaseEntity implements Serializable {
 
+    public static final String FIND_BY_USR ="Account.findByUser";
+    public static final String FIND_ALL = "Account.findAll";
     public Account (){}
     
     public Account(String email, String pwd) {

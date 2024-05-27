@@ -1,15 +1,16 @@
 package it.tsp.control;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import it.tsp.entity.Account;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;
 
-@TransactionScoped
+@ApplicationScoped
 @Transactional(Transactional.TxType.REQUIRED)
 public class AccountStore implements Serializable {
         @PersistenceContext(unitName = "payghost")
@@ -19,7 +20,10 @@ public class AccountStore implements Serializable {
             Account saved = em.merge(e);
                 return saved;
             }        
-            
+        public List<Account> findAll(){
+            return em.createNamedQuery(Account.FIND_ALL, Account.class).getResultList();
+
+        }    
         public Optional<Account> findAccountById(long accountId){
             Account account = em.find(Account.class, accountId);
             return account==null ? Optional.empty() : Optional.of(account);
