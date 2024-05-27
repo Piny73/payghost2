@@ -20,7 +20,7 @@ public class RechargeStore {
                 return saved;
             }
 
-     public static List<Recharge> findRechargesByAccountId(long accountId) {
+     public List<Recharge> findRechargesByAccountId(long accountId) {
         return em.createNamedQuery(Recharge.FIND_BY_ACCOUNT_ID, Recharge.class)
                 .setParameter("id", accountId)
                 .getResultList();

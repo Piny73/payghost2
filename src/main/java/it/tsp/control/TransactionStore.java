@@ -1,7 +1,7 @@
 package it.tsp.control;
 
 import java.util.List;
-import it.tsp.entity.Recharge;
+import it.tsp.entity.Transaction;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -23,8 +23,8 @@ public class TransactionStore {
         return saved;
     }
 
-    public static List<TransactionStore> findTransactionsByAccountId(long accountId) {
-        return em.createNamedQuery(TransactionStore.FIND_BY_ACCOUNT_ID, TransactionStore.class)
+    public List<Transaction> findTransactionsByAccountId(long accountId) {
+        return em.createNamedQuery(Transaction.FIND_BY_ACCOUNT_ID, Transaction.class)
                 .setParameter("id", accountId)
                 .getResultList();
     }

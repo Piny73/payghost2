@@ -3,10 +3,7 @@ package it.tsp.control;
 import java.util.Optional;
 
 import it.tsp.entity.Account;
-import it.tsp.entity.Recharge;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.TransactionScoped;
 import jakarta.transaction.Transactional;

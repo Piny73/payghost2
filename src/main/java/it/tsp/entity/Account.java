@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -36,6 +37,8 @@ public class Account extends BaseEntity implements Serializable {
 
     private String fname;
      private String lname;
+     @Transient
+     private String confirmPwd;
 
      @Email(message = "Indirizzo mail non valido!" )
      @Column(nullable = false, unique = true)
@@ -88,6 +91,14 @@ public class Account extends BaseEntity implements Serializable {
     public String toString() {
         return "Account [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", pwd=" + pwd
                 + ", credit=" + credit + "]";
+    }
+
+    public String getConfirmPwd() {
+        return confirmPwd;
+    }
+
+    public void setConfirmPwd(String confirmPwd) {
+        this.confirmPwd = confirmPwd;
     }
 
      
