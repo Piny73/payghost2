@@ -20,9 +20,7 @@ public class AccountStore {
         public Account saveAccount(Account e) {
             Account saved = em.merge(e);
                 return saved;
-            }
-            
-        
+            }        
             
         public Optional<Account> findAccountById(long accountId){
             Account account = em.find(Account.class, accountId);

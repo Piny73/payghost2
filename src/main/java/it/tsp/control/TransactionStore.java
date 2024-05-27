@@ -1,10 +1,19 @@
 package it.tsp.control;
 
 import java.util.List;
-
+import it.tsp.entity.Recharge;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import jakarta.persistence.EntityManager;
+@ApplicationScoped
+@Transactional(Transactional.TxType.REQUIRED)
 public class TransactionStore {
 
-    public static TransactionStore saveTransaction(TransactionStore e) {
+    @PersistenceContext(unitName = "payghost")
+    private EntityManager em;
+    
+    public TransactionStore saveTransaction(TransactionStore e) {
         if (em.getTransaction().isActive()) {
             return em.merge(e);
         }
