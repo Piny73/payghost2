@@ -3,105 +3,128 @@ package it.tsp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
-@NamedQueries({
-    @NamedQuery(name = Account.FIND_BY_USR, query ="select e from Account e where e.email=:email"),
-    @NamedQuery(name = Account.FIND_ALL, query = "select e from Account e order by e.lname")
-})
 @Entity
 @Table(name = "account")
-
 public class Account extends BaseEntity implements Serializable {
 
-    public static final String FIND_BY_USR ="Account.findByUser";
-    public static final String FIND_ALL = "Account.findAll";
-    public Account (){}
-    
+    public static final String FIND_ALL = null;
+    public static final String FIND_BY_USR = null;
+
+    public Account() {
+    }
+
     public Account(String email, String pwd) {
         this.email = email;
         this.pwd = pwd;
     }
 
-    @Email(message = "Indirizzo mail non valido!") 
-    @NotBlank(message = "la pwd non può avere solo spazi!") @Size(min = 4, message = "Inserisci più di 4 caratteri!")
-    @PositiveOrZero
-    public Account(String fname, String lname, String email, String pwd,BigDecimal credit) {
+    public Account(String fname, String lname,
+            @Email(message = "la proprietà email non contiene un indirizzo email valido") String email,
+            @NotBlank(message = "la proprietà pwd non può avere solo spazi") @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri") String pwd) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
         this.pwd = pwd;
-        this.credit = credit;
     }
-     
-     private String fname;
-     private String lname;
-     @Transient
-     private String confirmPwd;
 
-     @NotBlank
-     @Email(message = "Indirizzo mail non valido!" )
-     @Column(nullable = false, unique = true)
-     private String email;
+    private String fname;
+    private String lname;
 
-     @NotBlank(message = "la pwd non può avere solo spazi!")
-     @Size(min = 4, message = "Inserisci più di 4 caratteri!")
-     @Column(nullable = false)
-     private String pwd;
+    @Email(message = "la proprietà email non contiene un indirizzo email valido")
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @PositiveOrZero
-     @Column(precision = 6, scale = 2)
-     private BigDecimal credit;
+    @NotBlank(message = "la proprietà pwd non può avere solo spazi")
+    @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri")
+    @Column(nullable = false)
+    private String pwd;
 
-     /* il costruttore non è visibile, ma è presente e vuoto */
-    
+    @NotBlank(message = "la proprietà pwd non può avere solo spazi")
+    @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri")
+    @Column(nullable = false)
+    private String confirmPwd;
+
+
+
+    @PositiveOrZero(message = "La proprietà credit deve essere >= 0")
+    @Column(precision = 6, scale = 2)
+    private BigDecimal credit = BigDecimal.ZERO;
+
+    public void increaseCredit(BigDecimal amount) {
+        this.credit = this.credit.add(amount);
+    }
+
+    public void decreaseCredit(BigDecimal amount) {
+        this.credit = this.credit.subtract(amount);
+    }
+
+    public boolean hasSufficientCredit(BigDecimal amount) {
+        return this.credit.compareTo(amount) > 0;
+    }
+
+    public String getFullname(){
+        return lname + " " + fname;
+    }
     public String getFname() {
         return fname;
     }
+
     public void setFname(String fname) {
         this.fname = fname;
     }
+
     public String getLname() {
         return lname;
     }
+
     public void setLname(String lname) {
         this.lname = lname;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    @JsonbTransient
+
     public String getPwd() {
         return pwd;
     }
+
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
+
     public BigDecimal getCredit() {
         return credit;
     }
-    public void setCredit(BigDecimal credit) {
-        this.credit = credit;
+
+    public void setCredit(BigDecimal creadit) {
+        this.credit = creadit;
     }
-    
+
     @Override
     public String toString() {
         return "Account [id=" + id + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", pwd=" + pwd
                 + ", credit=" + credit + "]";
+    }
+
+    public static String getFindAll() {
+        return FIND_ALL;
+    }
+
+    public static String getFindByUsr() {
+        return FIND_BY_USR;
     }
 
     public String getConfirmPwd() {
@@ -112,5 +135,4 @@ public class Account extends BaseEntity implements Serializable {
         this.confirmPwd = confirmPwd;
     }
 
-     
 }

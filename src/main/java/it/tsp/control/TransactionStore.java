@@ -14,13 +14,8 @@ public class TransactionStore implements Serializable {
     @PersistenceContext(unitName = "payghost")
     private EntityManager em;
     
-    public TransactionStore saveTransaction(TransactionStore e) {
-        if (em.getTransaction().isActive()) {
-            return em.merge(e);
-        }
-        em.getTransaction().begin();
-        TransactionStore saved = em.merge(e);
-        em.getTransaction().commit();
+    public Transaction saveTransaction(Transaction e) {
+        Transaction saved = em.merge(e);
         return saved;
     }
 

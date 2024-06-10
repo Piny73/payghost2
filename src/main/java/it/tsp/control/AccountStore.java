@@ -13,19 +13,29 @@ import jakarta.transaction.Transactional;
 @ApplicationScoped
 @Transactional(Transactional.TxType.REQUIRED)
 public class AccountStore implements Serializable {
-        @PersistenceContext(unitName = "payghost")
-        private EntityManager em = null;
+    @PersistenceContext(unitName = "payghost")
+    private EntityManager em = null;
 
-        public Account saveAccount(Account e) {
-            Account saved = em.merge(e);
-                return saved;
-            }        
-        public List<Account> findAll(){
-            return em.createNamedQuery(Account.FIND_ALL, Account.class).getResultList();
+    public Account saveAccount(Account e) {
+        Account saved = em.merge(e);
+        return saved;
+    }
 
-        }    
-        public Optional<Account> findAccountById(long accountId){
-            Account account = em.find(Account.class, accountId);
-            return account==null ? Optional.empty() : Optional.of(account);
-        }
+    public List<Account> findAll() {
+        return em.createNamedQuery(Account.FIND_ALL, Account.class).getResultList();
+
+    }
+
+    public Optional<Account> findAccountById(long accountId) {
+        Account account = em.find(Account.class, accountId);
+        return account == null ? Optional.empty() : Optional.of(account);
+    }
+
+    public Optional<Account> findAccountByUsr(String email) {
+        List<Account> result = em.createNamedQuery(Account.FIND_BY_USR, Account.class)
+                .setParameter("email", email)
+                .getResultList();
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
+    }
+
 }

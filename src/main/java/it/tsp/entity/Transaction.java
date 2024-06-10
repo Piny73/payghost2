@@ -20,9 +20,9 @@ public class Transaction extends BaseEntity implements Serializable {
     public static final String FIND_BY_ACCOUNT_ID = "Transaction.findByAccountId";;
     public Transaction (){}
 
-    public Transaction(Account sender, Account receiver, BigDecimal amount) {
-        this.sender = sender;
-        this.receiver = receiver;
+    public Transaction(Account sender2, Account receiver2, BigDecimal amount) {
+        this.sender = sender2;
+        this.receiver = receiver2;
         this.amount = amount;
     }
     @ManyToOne(optional = false)
