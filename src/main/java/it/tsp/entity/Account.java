@@ -3,7 +3,7 @@ package it.tsp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import jakarta.json.Json;
+
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

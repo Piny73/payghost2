@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import dto.CreateREchargeDTO;
 import it.tsp.control.AccountStore;
 import it.tsp.control.RechargeStore;
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -59,6 +61,7 @@ public class AccountsResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(){
         List<Account> result =accountStore.findAll();
+        List<AccountSlice> converteResult = result.stream().map(v ->).collect();
         return Response.ok(result).build();
     }
 
@@ -66,9 +69,16 @@ public class AccountsResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response findById(@PathParam("id") long id){
-
         Optional <Account> result = accountStore.findAccountById(id);
         return result.isPresent() ? Response.ok(result.get()).build()
         : Response.status(Status.NOT_FOUND).build();
+    }
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}/recharge")
+    public Response doRecharge(@PathParam("id") long id, @Valid CreateREchargeDTO e){
+    
+
     }
 }
