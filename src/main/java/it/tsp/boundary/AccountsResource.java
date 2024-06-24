@@ -3,9 +3,13 @@ package it.tsp.boundary;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.naming.OperationNotSupportedException;
+
 import it.tsp.control.AccountStore;
+import it.tsp.control.EncodeUtils;
 import it.tsp.control.PayghostManager;
 import it.tsp.control.RechargeStore;
 import it.tsp.control.TransactionStore;
@@ -17,6 +21,7 @@ import it.tsp.entity.Recharge;
 import it.tsp.entity.Transaction;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 import jakarta.validation.Valid;
@@ -57,7 +62,7 @@ public class AccountsResource {
             throw new PayghostException("le password non corrispondono");
         }
 
-        // account.setPwd(EncodeUtils.encode(account.getPwd()));
+        account.setPwd(EncodeUtils.encode(account.getPwd()));
 
         Account saved = accountStore.saveAccount(account);
 
@@ -138,10 +143,10 @@ public class AccountsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}/transactions")
-    public Response allTransactions(@PathParam("id") long id, @Valid CreateTransactionDTO e) {
+    public Response allTransactions(@PathParam("id") long id) {
         Account account = accountStore.findAccountById(id)
                 .orElseThrow(() -> new NotFoundException("account not exist"));
-        return Response.ok(transactionStore.findTransactionsByAccountId(id))
+        return Response.ok(transactionStore.findTransactionsByAccountIdFetchAll(id))
                 .build();
     }
 }

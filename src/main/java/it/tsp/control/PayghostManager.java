@@ -33,7 +33,11 @@ public class PayghostManager {
     }
 
     public String doLogin(@Valid CredentialDTO e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'doLogin'");
+        Account account = accountStore.findAccountByUsr(e.email())
+                .orElseThrow(() -> new PayghostException("login failed"));
+        if (!EncodeUtils.verify(e.pwd(), account.getPwd())) {
+            throw new PayghostException("login failed");
+        }
+        return String.valueOf(account.getId());
     }
 }

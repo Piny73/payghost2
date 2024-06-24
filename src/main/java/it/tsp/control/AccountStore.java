@@ -1,29 +1,30 @@
 package it.tsp.control;
 
+import java.util.Optional;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
 import it.tsp.entity.Account;
-import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-@ApplicationScoped
+@RequestScoped
 @Transactional(Transactional.TxType.REQUIRED)
 public class AccountStore implements Serializable {
+
     @PersistenceContext(unitName = "payghost")
-    private EntityManager em = null;
+    private EntityManager em;
 
     public Account saveAccount(Account e) {
         Account saved = em.merge(e);
         return saved;
     }
 
-    public List<Account> findAll() {
-        return em.createNamedQuery(Account.FIND_ALL, Account.class).getResultList();
-
+    public List<Account> findAll(){
+        return em.createNamedQuery(Account.FIND_ALL, Account.class)
+            .getResultList();
     }
 
     public Optional<Account> findAccountById(long accountId) {

@@ -7,11 +7,13 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class PayghostExceptionMapper implements ExceptionMapper<PayghostException>{
+public class PayghostExceptionMapper implements ExceptionMapper<PayghostException> {
 
     @Override
-    public Response toResponse(PayghostException exception) {        
-        return Response.status(Status.BAD_REQUEST).header("caused-by", exception.getMessage()).build();
+    public Response toResponse(PayghostException exception) {
+        return Response.status(Status.BAD_REQUEST)
+                .header("caused-by", exception.getMessage())
+                .build();
     }
 
 }

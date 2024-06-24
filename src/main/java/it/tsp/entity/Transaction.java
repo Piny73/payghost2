@@ -4,36 +4,40 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+
 @NamedQueries({
-    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.sender.id= :id or e.receiver.id= :id")})
+    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.sender.id= :id or e.receiver.id= :id")
+})
 @Entity
 @Table(name = "transaction")
-public class Transaction extends BaseEntity implements Serializable {
+public class Transaction extends BaseEntity implements Serializable{
 
-    public static final String FIND_BY_ACCOUNT_ID = "Transaction.findByAccountId";;
-    public Transaction (){}
+    public static final String FIND_BY_ACCOUNT_ID = "Transaction.findByAccountId";
 
-    public Transaction(Account sender2, Account receiver2, BigDecimal amount) {
-        this.sender = sender2;
-        this.receiver = receiver2;
+    public Transaction(){}
+
+    public Transaction(Account sender, Account receiver, BigDecimal amount) {
+        this.sender = sender;
+        this.receiver = receiver;
         this.amount = amount;
     }
-    @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Account sender;
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Account receiver;
-    @Column(nullable = false)
-    private LocalDate tDate = LocalDate.now();
     @Column(precision = 6, scale = 2, nullable = false)
     private BigDecimal amount;
-
+    @Column(nullable = false)
+    private LocalDate performedOn = LocalDate.now();
+    
     public Account getSender() {
         return sender;
     }
@@ -46,67 +50,27 @@ public class Transaction extends BaseEntity implements Serializable {
     public void setReceiver(Account receiver) {
         this.receiver = receiver;
     }
-    public LocalDate getOperation() {
-        return tDate;
-    }
-    public void setOperation(LocalDate tDate) {
-        this.tDate = tDate;
-    }
     public BigDecimal getAmount() {
         return amount;
     }
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((sender == null) ? 0 : sender.hashCode());
-        result = prime * result + ((receiver == null) ? 0 : receiver.hashCode());
-        result = prime * result + ((tDate == null) ? 0 : tDate.hashCode());
-        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
-        return result;
+    public BigDecimal viewAmount(long accountId){
+        return sender.getId()==accountId ? BigDecimal.valueOf(- amount.doubleValue())
+            : BigDecimal.valueOf(amount.doubleValue());
     }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Transaction other = (Transaction) obj;
-        if (sender == null) {
-            if (other.sender != null)
-                return false;
-        } else if (!sender.equals(other.sender))
-            return false;
-        if (receiver == null) {
-            if (other.receiver != null)
-                return false;
-        } else if (!receiver.equals(other.receiver))
-            return false;
-        if (tDate == null) {
-            if (other.tDate != null)
-                return false;
-        } else if (!tDate.equals(other.tDate))
-            return false;
-        if (amount == null) {
-            if (other.amount != null)
-                return false;
-        } else if (!amount.equals(other.amount))
-            return false;
-        return true;
+    public LocalDate getPerformedOn() {
+        return performedOn;
+    }
+    public void setPerformedOn(LocalDate performedOn) {
+        this.performedOn = performedOn;
     }
     @Override
     public String toString() {
-        return "Transaction [id=" + id + ", sender=" + sender + ", receiver=" + receiver + ", tDate=" + tDate
-                + ", amount=" + amount + "]";
+        return "Transaction [sender=" + sender + ", id=" + id + ", receiver=" + receiver + ", amount=" + amount
+                + ", performedOn=" + performedOn + "]";
     }
-
-    
-
 
 
 }
