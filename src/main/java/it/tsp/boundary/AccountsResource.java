@@ -3,10 +3,8 @@ package it.tsp.boundary;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import javax.naming.OperationNotSupportedException;
+import java.util.stream.Collectors;
 
 import it.tsp.control.AccountStore;
 import it.tsp.control.EncodeUtils;
@@ -21,7 +19,7 @@ import it.tsp.entity.Recharge;
 import it.tsp.entity.Transaction;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.json.JsonObject;
+
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 import jakarta.validation.Valid;

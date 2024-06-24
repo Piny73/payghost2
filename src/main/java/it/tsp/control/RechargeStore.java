@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import it.tsp.entity.Recharge;
-import jakarta.enterprise.context.ApplicationScoped;
+
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
