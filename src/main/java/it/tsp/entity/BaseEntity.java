@@ -5,7 +5,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 
-
 @MappedSuperclass
 public abstract class BaseEntity {
     @Id
@@ -15,11 +14,9 @@ public abstract class BaseEntity {
     public long getId() {
         return id;
     }
-
     public void setId(long id) {
         this.id = id;
     }
-
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -27,7 +24,6 @@ public abstract class BaseEntity {
         result = prime * result + (int) (id ^ (id >>> 32));
         return result;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -42,4 +38,5 @@ public abstract class BaseEntity {
         return true;
     }
 
+    
 }
